@@ -1,22 +1,25 @@
-
 #include <stdio.h>
 
 /**
- * main - Entry point
- * Return:0
+ * main - prints all the numbers of base 16 in lowercase,
+ * followed by a new line
+ * output - 0123456789abcdef
+ * function - use putchar 3 times only
+ * Return: 0
  */
 int main(void)
 {
-	int i, y;
-	for (i = 0; i < 10; i++)
-	{
-		putchar (i + '0');
-	}
-	for (y = 'a'; y <= 'f'; y++)
-	{
-		putchar (y);
-	}
+	int nums;
+	char alpha;
 
-putchar('\n');
-return (0);
+	for (nums = 48; nums < 58; nums++)
+	{
+		putchar(nums);
+	}
+	for (alpha = 'a'; alpha <= 'f'; alpha++)
+	{
+		putchar(alpha);
+	}
+	putchar('\n');
+	return (0);
 }
