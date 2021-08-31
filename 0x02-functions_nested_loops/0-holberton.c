@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
- * main - Prints Holberton as a message using putchar.
+ * main - Prints _putchar as a message using putchar.
  *
  * Return: Always 0
  */
 int main(void)
 {
-char str[] = "Holberton";
+char str[] = "_putchar";
 
 int i;
 
