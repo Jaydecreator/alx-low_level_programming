@@ -1,43 +1,50 @@
 #include "hash_tables.h"
-
+#include <stdlib.h>
 /**
- * hash_table_set - adds an element to the hash table
- * @ht: hash table you want to add or update the key/value to
- * @key: input key, cannot be empty
- * @value: value associated with the key, can be empty
- * Return: 1 if succeeded, 0 otherwise
+ * hash_table_set - adds an element to the hash table.
+ * @ht: hash table for to add or update the key/value
+ * @key: key string
+ * @value: value associated with the key.
+ * Return: 1 if it succeeded, 0 otherwise
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	unsigned long int idx;
-	hash_node_t *curr, *new_node;
+	unsigned long int index;
+	hash_node_t *new_node, *ptr;
+	char *new_value;
 
-	if (!ht || !key || !value)
+	if (ht == NULL || key == NULL || *key == 0 || value == NULL)
 		return (0);
-	idx = key_index((const unsigned char *)key, ht->size);
-	curr = ht->array[idx];
-	while (curr)
+	/* Gives you the index of a key*/
+	index = key_index((const unsigned char *) key, ht->size);
+	ptr = ht->array[index];
+	while (ptr != NULL)
 	{
-		if (strcmp(curr->key, key) == 0)
-		{
-			free(curr->value);
-			curr->value = strdup(value);
-			if (!curr->value)
-				return (0);
-			return (1);
-		}
-		curr = curr->next;
+		if (strcmp(ptr->key, key) == 0) /*Compare values*/
+			break;
+		ptr = ptr->next;
 	}
-	new_node = malloc(sizeof(hash_node_t));
-	if (!new_node)
-		return (0);
-	new_node->key = strdup(key);
-	if (!new_node->key)
-		return (0);
-	new_node->value = strdup(value);
-	if (!new_node->value)
-		return (0);
-	new_node->next = ht->array[idx];
-	ht->array[idx] = new_node;
+	if (ptr == NULL)
+	{
+		new_node = malloc(sizeof(hash_node_t));
+		if (new_node == NULL) /*Handle errors*/
+			return (0);
+		new_node->key = strdup(key); /*Copy key*/
+		if (new_node->key == NULL)
+			return (0);
+		new_node->value = strdup(value); /*Copy value*/
+		if (new_node->value == NULL)
+			return (0);
+		new_node->next = ht->array[index];
+		ht->array[index] = new_node;
+	}
+	else
+	{
+		new_value = strdup(value); /*Copy value*/
+		if (new_value == NULL)
+			return (0);
+		free(ptr->value);
+		ptr->value = new_value;
+	}
 	return (1);
 }
